@@ -14,7 +14,7 @@ avSet = set([])
 for line in f:
     avSet = set(line.split(','))
 
-# 一些配置
+# 一些配置+
 conn = pymysql.connect(host='localhost', user='root', passwd='root', db='datamining', port=3306, use_unicode=True, charset="utf8")
 cur = conn.cursor()
 pattern = re.compile(r'\d+')  # 获取av号的正则表达式
