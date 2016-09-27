@@ -9,7 +9,7 @@ import pymysql
 pymysql.install_as_MySQLdb()
 
 # 从本地记录里获取曾经爬取过的视频号
-f = open('avSet.txt', 'r')
+f = open('avlist.txt', 'r')
 avSet = set([])
 for line in f:
     avSet = set(line.split(','))
@@ -110,7 +110,7 @@ class BilibiliSpider(SpiderHTML):
                 if isBreak == True:
                     break
         # 全部获取完毕，保存av号
-        with codecs.open('avSet.txt', encoding='utf-8', mode='w') as f:
+        with codecs.open('avlist.txt', encoding='utf-8', mode='w') as f:
             f.write(','.join(str(s) for s in avSet))
 
     # 解析单独的一个视频
