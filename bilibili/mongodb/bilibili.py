@@ -63,8 +63,11 @@ class BilibiliSpider(SpiderHTML):
                 content = self.getUrl(urlTmp)
 
                 videoContent = content.find('ul', class_='vd-list l1')
-                videoList = videoContent.find_all('div', class_='l-item')
-
+                try:
+                    videoList = videoContent.find_all('div', class_='l-item')
+                except:
+                    print("错误连接地址：")
+                    print(urlTmp)
                 for video in videoList:
                     AVInfo = dict()  # 作品信息
                     AVInfo['av'] = pattern.search(video.find('a', class_='title')['href']).group()  # av号
@@ -83,9 +86,9 @@ class BilibiliSpider(SpiderHTML):
                         print("作品名：{title},【视频信息获取失败】".format(**AVInfo))
                         continue
 
-                    AVInfo['play'] = video.find('span', class_='v-info-i gk').span.string  # 播放数
-                    AVInfo['danmu'] = video.find('span', class_='v-info-i dm').span.string  # 弹幕数
-                    AVInfo['collect'] = video.find('span', class_='v-info-i sc').span.string  # 收藏数
+                    AVInfo['play'] = int(video.find('span', class_='v-info-i gk').span.string.replace("--","0"))  # 播放数
+                    AVInfo['danmu'] = int(video.find('span', class_='v-info-i dm').span.string.replace("--","0"))  # 弹幕数
+                    AVInfo['collect'] = int(video.find('span', class_='v-info-i sc').span.string.replace("--","0"))  # 收藏数
                     AVInfo['url'] = biliUrl + video.find('a', class_='title')['href']  # 视频链接
                     AVInfo['desc'] = video.find('div', class_='v-desc').string  # 视频描述
                     AVInfo['author'] = video.find('a', class_='v-author')['href'].split('/')[-1]  # 用户id

@@ -63,8 +63,11 @@ class BilibiliSpider(SpiderHTML):
                 content = self.getUrl(urlTmp)
 
                 videoContent = content.find('ul', class_='vd-list l1')
-                videoList = videoContent.find_all('div', class_='l-item')
-
+                try:
+                    videoList = videoContent.find_all('div', class_='l-item')
+                except:
+                    print("错误连接地址：")
+                    print(urlTmp)
                 for video in videoList:
                     AVInfo = dict()  # 作品信息
                     AVInfo['av'] = pattern.search(video.find('a', class_='title')['href']).group()  # av号
