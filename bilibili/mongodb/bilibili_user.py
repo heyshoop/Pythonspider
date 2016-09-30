@@ -3,6 +3,12 @@ import datetime
 import time
 import requests
 import json
+from pymongo import MongoClient
+
+#数据库设置
+conn = MongoClient('127.0.0.1',27017)
+db = conn.bilibili
+biliuser = db.bili_user
 
 #生成随机数
 def datetime_to_timestamp_in_milliseconds(d):
@@ -39,4 +45,37 @@ jsDict = json.loads(jscontent.decode())
 
 print(jsDict)
 if jsDict['status'] == True:
-    print(jsDict['data']['name'])
+    UserInfo = dict() #人员信息
+    UserInfo['DisplayRank'] = jsDict['data']['DisplayRank'] #显示等级
+    UserInfo['theme_preview'] = jsDict['data']['theme_preview'] #主体预览
+    UserInfo['playNum'] = int(jsDict['data']['playNum'])  #播放量
+    UserInfo['coins'] = int(jsDict['data']['coins']) #硬币数
+    UserInfo['regtime'] = int(jsDict['data']['regtime']) #注册时间
+    UserInfo['pendant'] = jsDict['data']['pendant'] #json
+    UserInfo['approve'] = jsDict['data']['approve']
+    UserInfo['theme'] = jsDict['data']['theme'] #主题
+    UserInfo['sign'] = jsDict['data']['sign'] #签名
+    UserInfo['name'] = jsDict['data']['name'] #姓名
+    UserInfo['nameplate'] = jsDict['data']['nameplate']#名牌json
+    UserInfo['article'] = int(jsDict['data']['article']) #文章
+    UserInfo['rank'] = jsDict['data']['rank'] #等级
+    UserInfo['attention'] = jsDict['data']['attention'] #注意
+    UserInfo['fans'] = int(jsDict['data']['fans']) #粉丝数
+    UserInfo['face'] = jsDict['data']['face'] #头像
+    UserInfo['official_verify'] = jsDict['data']['official_verify'] #官方验证 json
+    UserInfo['attentions'] = jsDict['data']['attentions'] #注意事项
+    UserInfo['spacesta'] = int(jsDict['data']['spacesta'])
+    UserInfo['birthday'] = jsDict['data']['birthday'] #生日
+    UserInfo['sex'] = jsDict['data']['sex'] #性别
+    UserInfo['description'] = jsDict['data']['description'] #描述
+    UserInfo['friend'] = int(jsDict['data']['friend']) #朋友
+    UserInfo['level_info'] = jsDict['data']['level_info'] #等级信息json
+    UserInfo['place'] = jsDict['data']['place'] #地址
+    UserInfo['mid'] = jsDict['data']['mid'] #ID
+    UserInfo['im9_sign'] = jsDict['data']['im9_sign']
+    UserInfo['toutu'] = jsDict['data']['toutu'] #头像
+
+    try:
+        biliuser.insert(UserInfo)
+    except:
+        print("存储用户"+jsDict['data']['name']+"时发生错误")
