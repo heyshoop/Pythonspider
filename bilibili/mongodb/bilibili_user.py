@@ -31,7 +31,6 @@ urls = []
 for i in range(1, 2):
     url = 'http://space.bilibili.com/ajax/member/GetInfo?mid=' + str(i)
     urls.append(url)
-#多线程代办
 payload = {
         '_': datetime_to_timestamp_in_milliseconds(datetime.datetime.now()),
         'mid': url.replace('http://space.bilibili.com/ajax/member/GetInfo?mid=', '')
